@@ -1,23 +1,44 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-
 import { Header } from '../components/Header';
 import { Task, TasksList } from '../components/TasksList';
 import { TodoInput } from '../components/TodoInput';
+
 
 export function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   function handleAddTask(newTaskTitle: string) {
-    //TODO - add new task
+    const task = {
+      id: new Date().getTime(),
+      title: newTaskTitle,
+      done: false
+    }   
+
+    setTasks(oldState => [...oldState, task])
   }
 
   function handleToggleTaskDone(id: number) {
-    //TODO - toggle task done if exists
+    const tasksDone = tasks
+    
+    tasksDone.find(task => {
+      if (task.id === id) {
+        switch(task.done) {
+          case false:
+            task.done = true
+            break;
+          case true:
+            task.done = false
+            break;
+        }
+      }
+    })
+      
+    setTasks([...tasksDone])
   }
 
   function handleRemoveTask(id: number) {
-    //TODO - remove task from state
+    setTasks(oldState => oldState.filter(task => task.id !== id))
   }
 
   return (
